@@ -1,3 +1,5 @@
+//const { firestore } = require("firebase-admin");
+
 (function (window) {
     'use strict';
 
@@ -9,7 +11,12 @@
             console.log('running the DataStore function');
             if (!url) { throw new Error('No remote URL supplied.'); }
 
-            this.serverURL = url;
+            //this.serverURL = url;
+
+            //console.log("inside RemoteDataStore constructor");
+            //console.log(url);
+            var firestore = url.firestore();
+            this.docRef = firestore.doc("coffeeList/coffeeOrders");
         }
         ajaxposthelper(type, url, val) {
             $.ajax({ type: type, url: url, contentType: 'application/json',
@@ -30,6 +37,9 @@
         get(key, cb)  { this.ajaxhelper    ('GET',    this.serverURL + '/' + key, cb); }
         getAll(cb)    { this.ajaxhelper    ('GET',    this.serverURL,             cb); }
         remove(key)   { this.ajaxhelper    ('DELETE', this.serverURL + '/' + key); } 
+        addToFirestore(data) {
+            this.docRef.set(data);
+        }
     }
     App.RemoteDataStore = RemoteDataStore;
     window.App = App;
