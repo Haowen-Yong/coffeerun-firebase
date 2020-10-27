@@ -28,10 +28,14 @@
     var formHandler = new FormHandler(FORM_SELECTOR);
 
     formHandler.addSubmitHandler(function(data) {
+        truck.createOrder.call(truck, data);
+        checkList.addRow.call(checkList, data);
+        /*
         return truck.createOrder.call(truck, data)
             .then(() => {
                 checkList.addRow.call(checkList, data);
             }); 
+            */
     });
     console.log(formHandler);
 
